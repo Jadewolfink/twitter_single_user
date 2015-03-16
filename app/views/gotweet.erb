@@ -1,0 +1,42 @@
+
+<div class="container">
+
+  <h1>Assuming you're signed in, now tweet away!</h1>
+
+ <form id="user-tweets" action="/user/<%= @twitter_user.id %>/tweets" method= "post">
+ <input type="textarea" name="tweet" placeholder="maximum 140 characters">
+ <br>
+ <input type="submit" value="Tweet">
+ </form>
+ <div id="message"></div>
+
+ <div id="tweets">
+	<% @tweets.each_with_index do |x,y|  %>
+	<p><%= "#{y+1}. #{x.text}" %></p>
+	<%end%>
+</div>
+
+<script type = "text/javascript">
+// handle loading when clicked
+$('#user-tweets').submit(function(event) {
+	$('#message').text("Posting Tweet!")
+	$.ajax({
+    type: 'POST',
+    url: "/user/<%=@twitter_user.id%>/tweets",
+    data:$(this).serialize(),
+    success: function(data){ 
+    	$('body').empty();
+    	$('body').append(data);
+    	// $("#user-tweets").hide(); 
+    	// $("#message").text("Tweet Posted!");
+    	// $("#tweets").prepend("<p>" + data + "</p>");
+    }
+    });
+	event.preventDefault();
+
+
+});
+
+</script>
+
+</div>
